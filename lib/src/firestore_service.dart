@@ -14,7 +14,7 @@ class FirestoreService {
   }
 
   Future<void> addEmployee(Employee employee) async {
-    // Use add() to create a new document with an auto-generated ID
+
     await _firestore.collection('employees').add(employee.toJSON());
   }
 }

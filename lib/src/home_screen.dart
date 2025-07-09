@@ -11,7 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> roles = [
-    "Tutor",
+    "Tutor:in",
     "Dozent",
     "Operations",
     "Manager",
@@ -23,10 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final FirestoreService firestoreService = FirestoreService();
 
   Future<void> _addEmployee() async {
-    final name = nameController.text.trim();
-    final role = _selectedTag;
-    if (name.isEmpty || role == null) return;
-    await firestoreService.addEmployee(Employee(name, role));
+    if (nameController.text.isEmpty || _selectedTag == null) return;
+    await firestoreService.addEmployee(
+      Employee(nameController.text, _selectedTag!),
+    );
     nameController.clear();
     setState(() {
       _selectedTag = null; // Reset selection after adding
@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
+          spacing: 12,
           children: [
             Wrap(
               spacing: 8,
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 12),
+
             TextField(
               controller: nameController,
               decoration: const InputDecoration(
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               onSubmitted: (_) => _addEmployee(),
             ),
-            const SizedBox(height: 12),
+
             FilledButton(
               onPressed: _addEmployee,
               child: const Text("Hinzufügen"),
